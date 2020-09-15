@@ -42,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 
   <title>Hello, world!</title>
-  <style>
 </head>
 
 <body>
@@ -142,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <div class="form-group">
             <label for="title">Note Title</label>
             <input type="text" class="form-control" name="titleEdit" id="titleEdit" aria-describedby="emailHelp" />
-            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+            <small id="emailHelp" class="form-text text-muted">We will never share your email with anyone else.</small> 
           </div>
           <div class="form-group">
             <label for="desc">Note Description</label>
