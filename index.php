@@ -13,18 +13,30 @@ if (!$conn) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $title = $_POST['title'];
-  $description = $_POST['description'];
-  $sql = "INSERT INTO `curd_notes_h` (`Note TItle`, `Note Description`) VALUES ('$title', '$description')";
-  $result = mysqli_query($conn, $sql);
+  if (isset($_POST['serialEdit'])) {
+    echo "yes";
+    $serialEdit = $_POST['serialEdit'];
+    $title = $_POST['titleEdit'];
+    $description = $_POST['desEdit'];
+    $sql = "UPDATE `curd_notes_h` SET `Note Title` = '$title', `Note Description` = '$description' WHERE `curd_notes_h`.`No` = $serialEdit;";
+    $result = mysqli_query($conn, $sql);
 
-  if ($result) {
-    // echo "Form submit successfully";
-    $alert_message = true;
   } else {
-    echo "Form dose not submited";
+    
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $sql = "INSERT INTO `curd_notes_h` (`Note TItle`, `Note Description`) VALUES ('$title', '$description')";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result) {
+      // echo "Form submit successfully";
+      $alert_message = true;
+    } else {
+      echo "Form dose not submited";
+    }
   }
 }
+
 
 
 ?>
@@ -124,30 +136,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <th scope="row">' . $i . '</th>
       <td>' . $row["Note Title"] . '</td>
       <td>' . $row["Note Description"] . '</td>
-      <td>' . ' <a href="del" type="button" class="edit btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal" >Edit</a> <a href="del">Delete</a>
+      <td>' . ' <a href="del" type="button" id=" ' . $row['No'] . '" class="edit btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal" >Edit</a> <a href="del">Delete</a>
       
       <!-- Modal -->
-<div class="modal fade" id="exampleModal0" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button> 
       </div>
       <div class="modal-body">
+
         <form action="/curd_notes_h/index.php" method="POST">
+        <input type="hidden" name="serialEdit" class="serialEdit" id="serialEdit">
           <div class="form-group">
             <label for="title">Note Title</label>
-            <input type="text" class="form-control" name="titleEdit" id="titleEdit" aria-describedby="emailHelp" />
-            <small id="emailHelp" class="form-text text-muted">We will never share your email with anyone else.</small> 
+            <input type="text" class="form-control" name="titleEdit" id="titleEdit" aria-describedby="emailHelp" /> 
           </div>
           <div class="form-group">
             <label for="desc">Note Description</label>
-            <textarea class="form-control" name="descriptionEdit" id="desEdit" rows="3"></textarea>
+            <textarea class="form-control" name="desEdit" id="desEdit" rows="3"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary">Update</button>
         </form>
       </div>
       <div class="modal-footer">
@@ -191,21 +204,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     let edits = document.getElementsByClassName('edit');
     Array.from(edits).forEach(element => {
-      element.addEventListener('click', (e)=>{
+      element.addEventListener('click', (e) => {
         // console.log(e.target.parentNode.parentNode)
         let tr = e.target.parentNode.parentNode;
         let tit = tr.getElementsByTagName('td')[0].innerText;
         let des = tr.getElementsByTagName('td')[1].innerText;
         console.log(tit, des);
-
+        titleEdit = document.getElementById('titleEdit');
+        desEdit = document.getElementById('desEdit');
         titleEdit.value = tit;
         desEdit.value = des;
+        serialEdit = document.getElementById('serialEdit')
+        serialEdit.value = e.target.id;
+        console.log(e.target.id)
 
       })
     })
 
-
-
+    // $('#myModal').modal(options)
   </script>
 </body>
 
