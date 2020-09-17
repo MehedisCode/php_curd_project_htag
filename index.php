@@ -1,3 +1,7 @@
+<!-- Important Note:  -->
+<!-- You have to create a database name : curd_notes_h -->
+<!-- and table name : curd_notes_h  -->
+
 <?php
 $alert_message = false;
 $update_message = false;
